@@ -12,18 +12,7 @@ notes.get('/', (req, res) => {
   readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
-// GET Route for a specific tip
-notes.get('/:tip_id', (req, res) => {
-  const tipId = req.params.tip_id;
-  readFromFile('./db/db.json')
-    .then((data) => JSON.parse(data))
-    .then((json) => {
-      const result = json.filter((tip) => tip.tip_id === tipId);
-      return result.length > 0
-        ? res.json(result)
-        : res.json('No tip with that ID');
-    });
-});
+
 
 // DELETE Route for a specific tip
 notes.delete('/:tip_id', (req, res) => {
@@ -42,22 +31,23 @@ notes.delete('/:tip_id', (req, res) => {
     });
 });
 
-// POST Route for a new UX/UI tip
+// POST Route for a new UX/UI tip (post is a create)
+//http://localhost:3001/api/notes/
+
 notes.post('/', (req, res) => {
   console.log(req.body);
 
-  const { username, topic, tip } = req.body;
+  const { title,text } = req.body;
 
   if (req.body) {
-    const newTip = {
-      username,
-      tip,
-      topic,
-      tip_id: uuidv4(),
+    const newNote = {
+      title,
+      text,
+      id: uuidv4(),
     };
 
-    readAndAppend(newTip, './db/db.json');
-    res.json(`Tip added successfully`);
+    const parsedData= readAndAppend(newNote, './db/db.json');
+    res.json( parsedData);
   } else {
     res.error('Error in adding tip');
   }
