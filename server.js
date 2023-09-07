@@ -19,11 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 
 //middlewear to modulize api routes
 app.use('/api', api);
-
-
 //middlewear for public to be hompage url
 //api base, first piece
-//http://localhost:3001/api
+
 app.use(express.static('public'));
 
 // GET Route for homepage
